@@ -2,7 +2,7 @@ from flask import Flask
 import joblib
 import csv
 from datetime import datetime
-from src.business_logic.process_query import create_business_logic
+from src.business_logic.process_query import create_business_logic, create_business_logic2
 from src.IO.get_data_from_yahoo import get_last_close, get_live_price, get_last_last_close
 
 #from src.IO.storage_tools import get_model_from_bucket
@@ -18,30 +18,17 @@ def hello():
 @app.route('/get_stock_val/<ticker>', methods=['GET'])
 def get_stock_value(ticker):
     bl = create_business_logic()
+    bl2 = create_business_logic2()
     prediction = bl.do_predictions_for(ticker)
+    prediction2 = bl2.do_predictions_for(ticker)
     last_close = get_last_close(ticker)
     live_price = get_live_price(ticker)
     before_yesterday_close = get_last_last_close(ticker)
-    return f'<br/><br/>{ticker} prediction: {prediction}<br/><br/>{ticker} last close: {last_close}' \
+    return f'<br/><br/>{ticker} prediction for last close: {prediction}' \
+           f'<br/><br/>{ticker} last close: {last_close}' \
+           f'<br/><br/>{ticker} prediction for next close: {prediction2}' \
            f'<br/><br/>{ticker} live price: {live_price}' \
-           f'<br/><br/>{ticker} yesterday close: {before_yesterday_close}<br/><br/>'
-
-
-#@app.route('/get_pkl/<ticker>', methods=['GET'])
-#def get_pkl(ticker):
-#    file_name = ticker+".pkl"
-#    with open(file_name, 'rb') as f:
-#        joblib.load(f)
-#    print(f)
-#    return f'a'
-
-
-#@app.route('/get_model/<ticker>', methods=['GET'])
-#def get_model(ticker):
-#    file_name = ticker+".pkl"
-#    model = get_model_from_bucket(file_name, 'model_bucket_9876_100')
-#    print(model)
-#    return f'a'
+           f'<br/><br/>{ticker} previous close: {before_yesterday_close}<br/><br/>'
 
 
 if __name__ == '__main__':

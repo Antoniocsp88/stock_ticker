@@ -19,6 +19,16 @@ def get_last_stock_price(ticker, last=False):
     return si.get_data(ticker)
 
 
+def get_last_stock_price2(ticker, last=False):
+    if last:
+        now = datetime.now()
+        start_date = now - timedelta(days=30)
+        #print(si.get_data(ticker, start_date, yesterday))######
+        return si.get_data(ticker, start_date, now)
+
+    return si.get_data(ticker)
+
+
 def get_last_close(ticker):
     now = datetime.now()
     #print(si.get_data(ticker, now, now))######
