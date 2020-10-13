@@ -3,7 +3,7 @@ import joblib
 import csv
 from datetime import datetime
 from src.business_logic.process_query import create_business_logic
-from src.IO.get_data_from_yahoo import get_last_price, get_live_price
+from src.IO.get_data_from_yahoo import get_last_close, get_live_price, get_last_last_close
 
 #from src.IO.storage_tools import get_model_from_bucket
 
@@ -19,10 +19,12 @@ def hello():
 def get_stock_value(ticker):
     bl = create_business_logic()
     prediction = bl.do_predictions_for(ticker)
-    last_close = get_last_price(ticker)
+    last_close = get_last_close(ticker)
     live_price = get_live_price(ticker)
+    before_yesterday_close = get_last_last_close(ticker)
     return f'<br/><br/>{ticker} prediction: {prediction}<br/><br/>{ticker} last close: {last_close}' \
-           f'<br/><br/>{ticker} live price: {live_price}<br/><br/>'
+           f'<br/><br/>{ticker} live price: {live_price}' \
+           f'<br/><br/>{ticker} yesterday close: {before_yesterday_close}<br/><br/>'
 
 
 #@app.route('/get_pkl/<ticker>', methods=['GET'])

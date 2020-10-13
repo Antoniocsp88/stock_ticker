@@ -19,7 +19,7 @@ def get_last_stock_price(ticker, last=False):
     return si.get_data(ticker)
 
 
-def get_last_price(ticker):
+def get_last_close(ticker):
     now = datetime.now()
     #print(si.get_data(ticker, now, now))######
     df_price = si.get_data(ticker, now, now)
@@ -27,6 +27,17 @@ def get_last_price(ticker):
         return df_price.iloc[0]['open']
     else:
         return df_price.iloc[0]['adjclose']
+
+def get_last_last_close(ticker):
+    now = datetime.now()
+    yesterday = now - timedelta(days=1)
+    #print(si.get_data(ticker, yesterday, now))######
+    df_price = si.get_data(ticker, yesterday, now)
+    if df_price['adjclose'].empty:
+        return df_price.iloc[0]['open']
+    else:
+        return df_price.iloc[0]['adjclose']
+
 
 
 def get_live_price(ticker):
